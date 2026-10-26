@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Юля, это тебе</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#0d0a0c; --panel:#171115; --bone:#f6ece9; --dim:#a8959d;
+    --pink:#ff4fa3; --soft:#ffc2dd; --amber:#ffb454;
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *,*::before,*::after{box-sizing:inherit;margin:0;padding:0}
+  html{height:100%}
+  body{min-height:100%;background:var(--ink);color:var(--bone);font-family:'Manrope',system-ui,sans-serif;font-weight:300;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(60vmax 40vmax at 88% 6%,rgba(255,79,163,.18),transparent 60%),radial-gradient(50vmax 40vmax at 0% 100%,rgba(255,180,84,.10),transparent 60%)}
+  body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  body.flash{animation:flash .9s ease}
+  @keyframes flash{30%{background:#3a0f27}}
+
+  .screen{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;padding:40px 22px 120px}
+  .screen[hidden]{display:none}
+  .wrap{width:100%;max-width:980px;margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
+
+  h1{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(30px,6vw,56px);line-height:1.08;letter-spacing:-.03em}
+  h1 .name{color:var(--pink)}
+  .lead{margin:24px 0 26px;max-width:46ch;font-size:17px;line-height:1.7;color:var(--dim)}
+  .lead b{color:var(--bone);font-weight:600}
+  .tracklist{list-style:none;margin-bottom:32px;max-width:48ch;border-top:1px solid rgba(255,194,221,.18)}
+  .tracklist li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid rgba(255,194,221,.18);font-size:15px}
+  .tracklist span:last-child{color:var(--dim)}
+  .tracklist li:hover span:first-child{color:var(--pink)}
+
+  .actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .btn{font:700 14px 'Unbounded',sans-serif;padding:18px 38px;border-radius:40px;border:0;cursor:pointer;transition:transform .25s ease,background .25s ease}
+  .btn:focus-visible{outline:2px solid var(--amber);outline-offset:4px}
+  .btn-yes{background:var(--pink);color:var(--ink);box-shadow:0 0 40px rgba(255,79,163,.35)}
+  .btn-yes:hover{transform:translateY(-3px) scale(1.03);background:var(--soft)}
+  .btn-no{background:transparent;color:var(--dim);border:1px solid rgba(255,194,221,.25);font-weight:400}
+  .btn-no.run{position:fixed;z-index:200;transition:left .3s ease,top .3s ease,transform .3s ease}
+
+  .vinyl-wrap{position:relative;display:grid;place-items:center}
+  .vinyl{width:min(100%,380px);aspect-ratio:1;cursor:pointer;filter:drop-shadow(0 24px 40px rgba(0,0,0,.6))}
+  .vinyl .disc{transform-origin:200px 200px;animation:spin 12s linear infinite}
+  .vinyl.fast .disc{animation-duration:1.6s}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .fl{position:absolute;width:64px;height:64px;animation:sway 5s ease-in-out infinite alternate;cursor:pointer}
+  .fl.f1{top:-6px;left:2%}.fl.f2{bottom:4%;right:-2%;width:84px;height:84px;animation-delay:-2s}.fl.f3{bottom:-4%;left:10%;width:44px;height:44px;animation-delay:-3s}
+  @keyframes sway{from{transform:rotate(-12deg) translateY(0)}to{transform:rotate(14deg) translateY(-8px)}}
+
+  /* enduro strip */
+  .road{position:fixed;left:0;right:0;bottom:calc(6px + env(safe-area-inset-bottom,0px));height:112px;z-index:5;pointer-events:none;overflow:hidden}
+  .road::after{content:'';position:absolute;left:0;right:0;bottom:6px;border-bottom:2px dashed rgba(255,194,221,.25)}
+  .bike{position:absolute;bottom:4px;left:0;width:200px;pointer-events:auto;cursor:pointer;animation:ride 13s linear infinite}
+  @keyframes ride{from{transform:translateX(-180px)}to{transform:translateX(calc(100vw + 40px))}}
+  .bike .bounce{animation:bump .5s ease-in-out infinite alternate;transform-origin:bottom}
+  @keyframes bump{to{transform:translateY(-3px) rotate(-1.5deg)}}
+  .bike .whl{transform-box:fill-box;transform-origin:center;animation:spin .5s linear infinite}
+  .bike.wheelie .bounce{animation:none;transform:rotate(-28deg);transition:transform .3s}
+  .puff{fill:#a8959d;opacity:0;transform-box:fill-box;transform-origin:center;animation:puff 1s ease-out infinite}
+  .puff:nth-child(2){animation-delay:-.33s}.puff:nth-child(3){animation-delay:-.66s}
+  @keyframes puff{from{opacity:.5;transform:translate(0,0) scale(.6)}to{opacity:0;transform:translate(-30px,-12px) scale(1.7)}}
+  .player{margin-top:18px;display:flex;gap:14px;align-items:center;background:var(--panel);border:1px solid rgba(255,194,221,.16);border-radius:18px;padding:14px 16px;width:min(100%,380px)}
+  .eq{display:flex;gap:3px;align-items:flex-end;height:30px;cursor:pointer;flex:none}
+  .eq i{width:4px;height:100%;background:var(--pink);border-radius:2px;transform-origin:bottom;animation:eq .9s ease-in-out infinite alternate}
+  .eq i:nth-child(2){animation-delay:-.3s}.eq i:nth-child(3){animation-delay:-.6s}.eq i:nth-child(4){animation-delay:-.15s}.eq i:nth-child(5){animation-delay:-.45s}
+  @keyframes eq{from{transform:scaleY(.25)}to{transform:scaleY(1)}}
+  .pi{flex:1;min-width:0}.pt{font:700 13px 'Unbounded',sans-serif}.pa{font-size:12px;color:var(--dim);margin-top:2px}.pn{font-size:12px;color:var(--soft);margin-top:6px;line-height:1.4}
+  .bar{height:3px;background:rgba(255,194,221,.18);border-radius:2px;margin-top:10px;overflow:hidden}.bar span{display:block;height:100%;width:0;background:var(--pink)}
+  .ctrl{display:flex;gap:6px;flex:none}
+  .listen{display:inline-block;margin-top:8px;font:700 11px 'Unbounded',sans-serif;color:var(--ink);background:var(--pink);padding:6px 12px;border-radius:20px;text-decoration:none}
+  .listen:hover{background:var(--soft)}.listen:focus-visible{outline:2px solid var(--amber);outline-offset:2px}.ctrl button{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,194,221,.25);background:transparent;color:var(--bone);font-size:18px;cursor:pointer}
+  .ctrl button:hover{background:var(--pink);color:var(--ink)}.ctrl button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+
+  .card{position:relative;max-width:640px;margin:0 auto;background:var(--panel);border:1px solid rgba(255,194,221,.14);border-radius:24px;padding:52px 40px;text-align:center;animation:pop .6s cubic-bezier(.16,1,.3,1)}
+  @keyframes pop{from{opacity:0;transform:translateY(20px) scale(.96)}}
+  .card h2{font-family:'Unbounded',sans-serif;font-weight:700;font-size:clamp(22px,5vw,34px);line-height:1.2;margin-bottom:18px}
+  .card p{color:var(--dim);font-size:17px;line-height:1.7;max-width:44ch;margin:0 auto 14px}
+  .card strong{color:var(--bone);font-weight:600}
+  .card .ps{margin-top:26px;font-size:14px}
+  .card .fl{position:absolute;top:-28px;right:-14px}
+  .ym{display:block;margin:18px auto 0;width:min(100%,380px);height:440px;border:0;border-radius:18px;background:var(--panel)}
+  .bouquet{display:block;width:min(240px,62%);margin:0 auto 14px;overflow:visible}
+  .bl{transform-box:fill-box;transform-origin:center;animation:bloom .9s cubic-bezier(.34,1.56,.64,1) both}
+  @keyframes bloom{from{transform:scale(0) rotate(-40deg)}to{transform:scale(1) rotate(0)}}
+  .bq-in{animation:rise .8s cubic-bezier(.16,1,.3,1) both;transform-box:fill-box;transform-origin:bottom}
+  @keyframes rise{from{transform:translateY(30px);opacity:0}}
+
+  .toast{position:fixed;left:50%;bottom:calc(120px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--pink);color:var(--ink);font:700 13px 'Unbounded',sans-serif;padding:14px 22px;border-radius:30px;opacity:0;transition:.35s;z-index:300;max-width:90vw;text-align:center;pointer-events:none}
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+  .float-el{position:fixed;pointer-events:none;z-index:50;animation:floatUp linear forwards}
+  @keyframes floatUp{from{transform:translateY(0) rotate(0);opacity:.9}to{transform:translateY(-115vh) rotate(300deg);opacity:0}}
+
+  @media(max-width:760px){
+    .wrap{grid-template-columns:1fr;gap:26px}.vinyl-wrap{order:-1}.vinyl{width:min(58vw,240px)}
+    .card{padding:40px 22px}.actions{flex-direction:column;align-items:stretch}.btn{text-align:center}
+    .bike{width:150px}
+  }
+  @media(prefers-reduced-motion:reduce){.bl,.bq-in{animation:none}.eq i,.puff{animation:none}.puff{opacity:0}.vinyl .disc,.fl,.bike,.bike .bounce,.bike .whl,.float-el{animation:none}.bike{left:20px}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="flower" viewBox="0 0 100 100">
+      <g fill="#ff4fa3"><circle cx="50" cy="22" r="19"/><circle cx="76" cy="41" r="19"/><circle cx="66" cy="72" r="19"/><circle cx="34" cy="72" r="19"/><circle cx="24" cy="41" r="19"/></g>
+      <g fill="#ff8cc3" opacity=".7"><circle cx="50" cy="26" r="9"/><circle cx="72" cy="42" r="9"/><circle cx="63" cy="68" r="9"/><circle cx="37" cy="68" r="9"/><circle cx="28" cy="42" r="9"/></g>
+      <circle cx="50" cy="50" r="12" fill="#ffb454"/>
+    </symbol>
+  </defs>
+</svg>
+
+<section class="screen" id="stage1">
+  <div class="wrap">
+    <div>
+      <h1>Юля, а давай <br>в воскресенье <br>попьём <span class="name">кофе?</span></h1>
+      <p class="lead">
+        Я в OG Buda, если честно, не разбираюсь. Но немного подшарил, потому что <b>знаю: ты-то в теме шаришь</b>. Так что вот, старался.
+      </p>
+      <ul class="tracklist" aria-label="План на воскресенье">
+        <li title="Первый трек"><span>Кофе, ты и я</span><span>воскресенье</span></li>
+        <li title="Обещаю не фальшивить"><span>Плейлист в наушниках</span><span>OG Buda, выбираешь ты</span></li>
+        <li title="Горячо, но это про кофе"><span>Всё остальное</span><span>по настроению 😏</span></li>
+      </ul>
+      <div class="actions">
+        <button class="btn btn-yes" id="yesBtn">Да, погнали</button>
+        <button class="btn btn-no" id="noBtn">Нет</button>
+      </div>
+    </div>
+
+    <div class="vinyl-wrap">
+      <svg class="fl f1" id="flA"><use href="#flower"/></svg>
+      <svg class="fl f2" id="flB"><use href="#flower"/></svg>
+      <svg class="fl f3" id="flC"><use href="#flower"/></svg>
+      <svg class="vinyl" id="vinyl" viewBox="0 0 400 400" role="img" aria-label="Пластинка «Только для Юли»">
+        <defs><radialGradient id="shine" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#1d1519"/><stop offset="1" stop-color="#0a0709"/></radialGradient><path id="rim" d="M 200 200 m -172 0 a 172 172 0 1 1 344 0 a 172 172 0 1 1 -344 0"/></defs>
+        <g class="disc">
+          <circle cx="200" cy="200" r="196" fill="url(#shine)" stroke="#33242c" stroke-width="2"/>
+          <g fill="none" stroke="#2c1f26"><circle cx="200" cy="200" r="180"/><circle cx="200" cy="200" r="165"/><circle cx="200" cy="200" r="150"/><circle cx="200" cy="200" r="135"/><circle cx="200" cy="200" r="120"/><circle cx="200" cy="200" r="105"/></g>
+          <path d="M200 200 L330 40 A190 190 0 0 1 390 160 Z" fill="rgba(255,79,163,.10)"/>
+          <circle cx="200" cy="200" r="84" fill="#ff4fa3"/>
+          <circle cx="200" cy="200" r="70" fill="none" stroke="#0d0a0c" stroke-width="1.5" stroke-dasharray="3 5"/>
+          <text x="200" y="214" text-anchor="middle" font-family="Unbounded, sans-serif" font-weight="900" font-size="38" fill="#0d0a0c">Юля</text><text font-family="Unbounded, sans-serif" font-weight="700" font-size="13" fill="#ffc2dd" opacity=".85"><textPath href="#rim" textLength="1070" lengthAdjust="spacing">только для Юли • только для Юли • только для Юли • только для Юли • </textPath></text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="stage2" hidden>
+  <div class="card">
+    <svg class="fl" style="width:80px;height:80px"><use href="#flower"/></svg>
+    <svg class="bouquet" viewBox="0 0 240 200" role="img" aria-label="Букет цветов">
+      <g class="bq-in">
+        <g stroke="#3fae7a" stroke-width="4" stroke-linecap="round" fill="none"><path d="M120 150 L120 56"/><path d="M120 150 Q96 110 72 80"/><path d="M120 150 Q144 110 168 80"/><path d="M120 150 Q80 140 42 118"/><path d="M120 150 Q160 140 198 118"/></g>
+        <ellipse cx="90" cy="118" rx="16" ry="7" fill="#3fae7a" transform="rotate(-35 90 118)"/><ellipse cx="150" cy="118" rx="16" ry="7" fill="#3fae7a" transform="rotate(35 150 118)"/>
+        <use class="bl" href="#flower" x="88" y="20" width="64" height="64" style="animation-delay:.2s"/>
+        <use class="bl" href="#flower" x="45" y="49" width="54" height="54" style="animation-delay:.4s"/>
+        <use class="bl" href="#flower" x="141" y="49" width="54" height="54" style="animation-delay:.55s"/>
+        <use class="bl" href="#flower" x="20" y="94" width="44" height="44" style="animation-delay:.7s"/>
+        <use class="bl" href="#flower" x="176" y="94" width="44" height="44" style="animation-delay:.85s"/>
+        <path d="M74 128 L166 128 L136 198 L104 198 Z" fill="#ffc2dd"/>
+        <path d="M74 128 L120 150 L166 128 L136 198 L104 198 Z" fill="#ff8cc3" opacity=".55"/>
+        <g fill="#ff4fa3"><ellipse cx="104" cy="152" rx="15" ry="8" transform="rotate(-20 104 152)"/><ellipse cx="136" cy="152" rx="15" ry="8" transform="rotate(20 136 152)"/><circle cx="120" cy="153" r="6" fill="#d6347f"/></g>
+      </g>
+    </svg>
+    <h2>Юля, ты только что сделала мне день</h2>
+    <p>Тогда договорились: <strong>воскресенье, кофе</strong>. Место выберешь ты, время подстроюсь под тебя.</p>
+    <p>Обещаю не опоздать.</p>
+    <p>Напиши, что ставим первым треком.</p>
+    <iframe class="ym" frameborder="0" allow="clipboard-write" title="Плейлист «Воскресенье»" src="https://music.yandex.ru/iframe/playlist/nphne-rfhscpki/1000"></iframe>
+    <a class="listen" href="https://music.yandex.ru/playlists/328e803d-6bcc-315c-b145-f65d4ef2a073" target="_blank" rel="noopener">Открыть в Яндекс Музыке</a>
+    <p class="ps">P.S. Кнопка «Нет» сломалась. Я тут ни при чём.</p>
+  </div>
+</section>
+
+<div class="road" aria-hidden="false">
+  <div class="bike" id="bike" title="Поехали">
+    <svg viewBox="0 0 230 124" width="100%" role="img" aria-label="Синий мотоцикл">
+      <g class="puffs"><circle class="puff" cx="14" cy="108" r="5"/><circle class="puff" cx="14" cy="108" r="5"/><circle class="puff" cx="14" cy="108" r="5"/></g>
+      <g class="bounce">
+        <g class="whl"><circle cx="52" cy="92" r="25" fill="none" stroke="#14141a" stroke-width="8"/><circle cx="52" cy="92" r="25" fill="none" stroke="#3b3b48" stroke-width="8" stroke-dasharray="3 4"/><circle cx="52" cy="92" r="18" fill="none" stroke="#cfd6e4" stroke-width="2"/><g stroke="#cfd6e4" stroke-width="1.5"><line x1="36" y1="92" x2="68" y2="92"/><line x1="36" y1="92" x2="68" y2="92" transform="rotate(60 52 92)"/><line x1="36" y1="92" x2="68" y2="92" transform="rotate(120 52 92)"/></g><circle cx="52" cy="92" r="4" fill="#ffb454"/></g>
+        <g class="whl"><circle cx="180" cy="92" r="25" fill="none" stroke="#14141a" stroke-width="8"/><circle cx="180" cy="92" r="25" fill="none" stroke="#3b3b48" stroke-width="8" stroke-dasharray="3 4"/><circle cx="180" cy="92" r="18" fill="none" stroke="#cfd6e4" stroke-width="2"/><g stroke="#cfd6e4" stroke-width="1.5"><line x1="164" y1="92" x2="196" y2="92"/><line x1="164" y1="92" x2="196" y2="92" transform="rotate(60 180 92)"/><line x1="164" y1="92" x2="196" y2="92" transform="rotate(120 180 92)"/></g><circle cx="180" cy="92" r="4" fill="#ffb454"/></g>
+        <line x1="112" y1="88" x2="52" y2="92" stroke="#aab4c8" stroke-width="6" stroke-linecap="round"/>
+        <line x1="70" y1="54" x2="98" y2="82" stroke="#ffb454" stroke-width="6" stroke-dasharray="3 2"/>
+        <path d="M130 76 Q150 86 128 94 L96 90 L94 70" fill="none" stroke="#cfd6e4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="62" y1="62" x2="92" y2="70" stroke="#aab4c8" stroke-width="9" stroke-linecap="round"/>
+        <rect x="102" y="72" width="34" height="26" rx="6" fill="#7d879c"/>
+        <rect x="108" y="64" width="22" height="12" rx="3" fill="#aab4c8"/>
+        <line x1="182" y1="92" x2="160" y2="38" stroke="#cfd6e4" stroke-width="7" stroke-linecap="round"/>
+        <line x1="182" y1="92" x2="160" y2="38" stroke="#ffb454" stroke-width="2" stroke-linecap="round"/>
+        <path d="M160 36 L148 28" stroke="#14141a" stroke-width="5" stroke-linecap="round"/>
+        <path d="M168 55 Q190 46 214 66 L207 69 Q190 58 170 64 Z" fill="#2f6bff"/>
+        <path d="M156 44 L172 40 L176 58 L160 62 Z" fill="#f6f8ff"/>
+        <text x="159" y="55" font-family="Unbounded,sans-serif" font-weight="900" font-size="9" fill="#1c3fa8" transform="rotate(-10 166 52)">250</text>
+        <path d="M98 50 Q114 36 148 42 L154 56 L134 74 L102 70 Z" fill="#2f6bff"/>
+        <path d="M110 60 L150 54 L134 74 L106 70 Z" fill="#1c3fa8" opacity=".55"/>
+        <path d="M30 52 Q46 44 64 48 L98 46 L100 56 L34 58 Z" fill="#2f6bff"/>
+        <path d="M60 46 Q82 40 106 42 L106 50 L62 52 Z" fill="#15151b"/>
+        <path d="M84 48 L112 22" stroke="#ff4fa3" stroke-width="13" stroke-linecap="round"/>
+        <path d="M86 48 L112 56 L108 86" fill="none" stroke="#d6347f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="102" y="84" width="18" height="6" rx="2" fill="#14141a"/>
+        <path d="M110 24 L134 30 L148 30" fill="none" stroke="#ff4fa3" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="120" cy="12" r="10" fill="#f6f8ff"/>
+        <path d="M122 9 L132 11 L131 17 L122 18 Z" fill="#2f6bff"/>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const toast = $('toast');
+  let tt;
+  function say(msg, ms){ toast.textContent = msg; toast.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('on'), ms || 2600); }
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function rain(icons, n, ms){
+    if (calm) return;
+    const timer = setInterval(() => {
+      const el = document.createElement('div');
+      el.className = 'float-el';
+      el.textContent = icons[Math.floor(Math.random()*icons.length)];
+      el.style.left = Math.random()*100 + 'vw'; el.style.top = '105vh';
+      el.style.fontSize = (16 + Math.random()*22) + 'px';
+      el.style.animationDuration = (4 + Math.random()*4) + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 8500);
+    }, ms);
+    setTimeout(() => clearInterval(timer), n);
+  }
+
+  // easter eggs
+  $('vinyl').addEventListener('click', e => {
+    e.currentTarget.classList.toggle('fast');
+    say(e.currentTarget.classList.contains('fast') ? 'Сделал погромче 🔊' : 'Ладно, потише');
+  });
+  const flowerLines = ['Это тебе 🌸', 'Ещё один. Они бесконечные', 'Юля, ты вообще читаешь, что тут написано?', 'Букет собран 💐'];
+  let fc = 0;
+  ['flA','flB','flC'].forEach(id => $(id).addEventListener('click', () => { say(flowerLines[fc++ % flowerLines.length]); rain(['🌸','🌷'], 2500, 160); }));
+  $('bike').addEventListener('click', e => {
+    const b = e.currentTarget; b.classList.add('wheelie'); say('Darex Rimer 250 🏍️💨', 3200);
+    setTimeout(() => b.classList.remove('wheelie'), 900);
+  });
+  let typed = '';
+  window.addEventListener('keydown', e => {
+    typed = (typed + e.key.toLowerCase()).slice(-4);
+    if (typed === 'buda') { document.body.classList.add('flash'); setTimeout(() => document.body.classList.remove('flash'), 900); say('О, она знает 🖤'); rain(['🖤','🎵'], 4000, 140); }
+  });
+
+  // the dodging "No" button
+  const noBtn = $('noBtn');
+  const noTexts = ['Нет','Точно?','Подумай','Юля…','Не спеши','Может, да?','Пожалуйста'];
+  let noCount = 0;
+  function dodge(){
+    if (noCount >= 6){ noBtn.style.opacity = '0'; noBtn.style.pointerEvents = 'none'; say('Кнопка закончилась 😌'); return; }
+    const r = noBtn.getBoundingClientRect();
+    noBtn.classList.add('run');
+    noBtn.style.left = Math.max(15, Math.random()*(innerWidth - r.width - 30)) + 'px';
+    noBtn.style.top = Math.max(15, Math.random()*(innerHeight - r.height - 130)) + 'px';
+    noCount++;
+    noBtn.textContent = noTexts[Math.min(noCount, noTexts.length-1)];
+    noBtn.style.transform = 'scale(' + Math.max(.55, 1 - noCount*.08) + ')';
+  }
+  noBtn.addEventListener('mouseenter', dodge);
+  noBtn.addEventListener('focus', dodge);
+  noBtn.addEventListener('touchstart', e => { e.preventDefault(); dodge(); }, { passive:false });
+
+  $('yesBtn').addEventListener('click', () => {
+    $('stage1').hidden = true; $('stage2').hidden = false; scrollTo(0,0);
+    rain(['🌸','🖤','☕','🎵','🏍️','✨'], 12000, 300);
+    $('bike').style.animationDuration = '5s';
+  });
+</script>
+</body>
+</html>
