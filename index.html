@@ -85,6 +85,7 @@
   .card strong{color:var(--bone);font-weight:600}
   .card .ps{margin-top:26px;font-size:14px}
   .card .fl{position:absolute;top:-28px;right:-14px}
+  .ym{display:block;margin:18px auto 0;width:min(100%,380px);height:440px;border:0;border-radius:18px;background:var(--panel)}
   .bouquet{display:block;width:min(240px,62%);margin:0 auto 14px;overflow:visible}
   .bl{transform-box:fill-box;transform-origin:center;animation:bloom .9s cubic-bezier(.34,1.56,.64,1) both}
   @keyframes bloom{from{transform:scale(0) rotate(-40deg)}to{transform:scale(1) rotate(0)}}
@@ -149,17 +150,6 @@
           <text x="200" y="214" text-anchor="middle" font-family="Unbounded, sans-serif" font-weight="900" font-size="38" fill="#0d0a0c">Юля</text><text font-family="Unbounded, sans-serif" font-weight="700" font-size="13" fill="#ffc2dd" opacity=".85"><textPath href="#rim" textLength="1070" lengthAdjust="spacing">только для Юли • только для Юли • только для Юли • только для Юли • </textPath></text>
         </g>
       </svg>
-      <div class="player" id="player">
-        <div class="eq" id="eq" role="button" tabindex="0" aria-label="Факт про Буду"><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="pi">
-          <div class="pt" id="pt"></div>
-          <div class="pa">OG Buda</div>
-          <div class="pn" id="pn"></div>
-          <a class="listen" id="listen" href="#" target="_blank" rel="noopener">Слушать</a>
-          <div class="bar"><span id="pb"></span></div>
-        </div>
-        <div class="ctrl"><button id="prev" aria-label="Предыдущий трек">‹</button><button id="next" aria-label="Следующий трек">›</button></div>
-      </div>
     </div>
   </div>
 </section>
@@ -185,7 +175,8 @@
     <p>Тогда договорились: <strong>воскресенье, кофе</strong>. Место выберешь ты, время подстроюсь под тебя.</p>
     <p>Обещаю не опоздать.</p>
     <p>Напиши, что ставим первым треком.</p>
-    <p class="np" id="np" style="font-size:14px;color:var(--soft)"></p>
+    <iframe class="ym" frameborder="0" allow="clipboard-write" title="Плейлист «Воскресенье»" src="https://music.yandex.ru/iframe/playlist/nphne-rfhscpki/1000"></iframe>
+    <a class="listen" href="https://music.yandex.ru/playlists/328e803d-6bcc-315c-b145-f65d4ef2a073" target="_blank" rel="noopener">Открыть в Яндекс Музыке</a>
     <p class="ps">P.S. Кнопка «Нет» сломалась. Я тут ни при чём.</p>
   </div>
 </section>
@@ -266,26 +257,6 @@
     if (typed === 'buda') { document.body.classList.add('flash'); setTimeout(() => document.body.classList.remove('flash'), 900); say('О, она знает 🖤'); rain(['🖤','🎵'], 4000, 140); }
   });
 
-  // OG Buda player
-  const tracks = [
-    ['Биг Бой Слайм','Ты, скорее всего, знаешь его наизусть'],
-    ['Откровения','Откровенно: очень хочу тебя позвать'],
-    ['Выше Облаков','Настроение после твоего «да»'],
-    ['Добро Пожаловать','Звучит как приглашение на кофе'],
-    ['Вина','Не виноват, что позвал'],
-    ['На Кортах','На кортах не знаю, а в кофейне найдусь']
-  ];
-  let ti = 0, prog = 0;
-  function showTrack(){ $('pt').textContent = '«' + tracks[ti][0] + '»'; $('pn').textContent = tracks[ti][1]; prog = 0; $('pb').style.width = '0'; $('listen').href = 'https://music.yandex.ru/search?text=' + encodeURIComponent('OG Buda ' + tracks[ti][0]); }
-  function go(d){ ti = (ti + d + tracks.length) % tracks.length; showTrack(); }
-  $('next').addEventListener('click', () => go(1));
-  $('prev').addEventListener('click', () => go(-1));
-  showTrack();
-  if (!calm) setInterval(() => { prog += 1.2; if (prog >= 100) go(1); $('pb').style.width = prog + '%'; }, 400);
-  const fact = () => say('Буда родом из Тюмени, родился 10 января 1994. Ты и так знаешь, я просто тренировался 😏', 4200);
-  $('eq').addEventListener('click', fact);
-  $('eq').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') fact(); });
-
   // the dodging "No" button
   const noBtn = $('noBtn');
   const noTexts = ['Нет','Точно?','Подумай','Юля…','Не спеши','Может, да?','Пожалуйста'];
@@ -308,7 +279,6 @@
     $('stage1').hidden = true; $('stage2').hidden = false; scrollTo(0,0);
     rain(['🌸','🖤','☕','🎵','🏍️','✨'], 12000, 300);
     $('bike').style.animationDuration = '5s';
-    $('np').textContent = 'Сейчас играет: «Добро Пожаловать». Совпадение? Не думаю 😏';
   });
 </script>
 </body>
